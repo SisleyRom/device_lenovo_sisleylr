@@ -28,6 +28,10 @@ ro.product.first_api_level=21
 # Latest hardware revision supported
 ro.product.model.platform=1
 
+# Fling velocities
+ro.min.fling_velocity=160
+ro.max.fling_velocity=20000
+
 # IMS
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=0
