@@ -1,0 +1,2 @@
+add_lunch_combo sisleylr-eng
+add_lunch_combo sisleylr-userdebug
