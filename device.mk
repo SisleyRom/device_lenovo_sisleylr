@@ -26,8 +26,7 @@ PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 # Audio
-PRODUCT_PACKAGES += \
-    android.hardware.soundtrigger@2.0-impl \
+
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/acdb/MTP_Bluetooth_cal.acdb:system/etc/acdbdata/MTP/MTP_Bluetooth_cal.acdb \
@@ -62,15 +61,15 @@ TARGET_SCREEN_WIDTH := 720
 PRODUCT_PACKAGES += \
     camera.msm8916 \
     libmm-qcamera \
-    Snap 
+    Snap
 
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     camera.device@3.2-impl 
 
 PRODUCT_PACKAGES += \
-   libbson
-   #libstlport
+   libbson 
+#   libstlport
 
 	# Permissions
 PRODUCT_COPY_FILES += \
@@ -86,7 +85,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Dalvik/HWUI
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
-$(call inherit-product, device/lenovo/sisleyr/display/phone-xxhdpi-2048-hwui-memory.mk)
+$(call inherit-product, device/lenovo/sisleylr/display/phone-xxhdpi-2048-hwui-memory.mk)
 
 # Display
 PRODUCT_PACKAGES += \
@@ -109,7 +108,9 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 # GPS
 PRODUCT_PACKAGES += \
-    gps.msm8916
+    gps.msm8916 \
+    android.hardware.gnss@1.0-impl \
+    android.hardware.gnss@1.0-service
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/flp.conf:system/etc/flp.conf \
@@ -128,10 +129,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/ft5x06_ts.kl:system/usr/keylayout/ft5x06_ts.kl\
     $(LOCAL_PATH)/keylayout/qpnp_pon.kl:system/usr/keylayout/qpnp_pon.kl
 
-#Health
-PRODUCT_PACKAGES += \
-    android.hardware.health@1.0-service \
-    android.hardware.health@1.0-impl
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -175,7 +172,7 @@ PRODUCT_COPY_FILES += \
 # Sensors
 PRODUCT_PACKAGES += \
     sensors.msm8916 \
-    sensors.sisleyr \
+    sensors.sisleylr \
     libcalmodule_common \
     android.hardware.sensors@1.0-impl
 
@@ -212,4 +209,4 @@ PRODUCT_COPY_FILES += \
 
 
 # Call the proprietary setup
-$(call inherit-product, vendor/lenovo/sisleyr/sisleyr-vendor.mk)
+$(call inherit-product, vendor/lenovo/sisleylr/sisleylr-vendor.mk)

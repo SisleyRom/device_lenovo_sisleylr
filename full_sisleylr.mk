@@ -18,13 +18,13 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from sisleyr device
-$(call inherit-product, device/lenovo/sisleyr/device.mk)
+# Inherit from sisleylr device
+$(call inherit-product, device/lenovo/sisleylr/device.mk)
 
 # Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := sisleyr
-PRODUCT_NAME := full_sisleyr
+PRODUCT_DEVICE := sisleylr
+PRODUCT_NAME := full_sisleylr
 PRODUCT_BRAND := lenovo
-PRODUCT_MODEL := sisleyr
+PRODUCT_MODEL := sisleylr
 PRODUCT_MANUFACTURER := lenovo
 

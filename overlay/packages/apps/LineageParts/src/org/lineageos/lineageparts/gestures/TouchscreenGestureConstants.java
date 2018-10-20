@@ -30,12 +30,12 @@ class TouchscreenGestureConstants {
     static final int ACTION_CAMERA = 2;
     static final int ACTION_BROWSER = 3;
     static final int ACTION_DIALER = 4;
-    static final int ACTION_EMAIL = 5;
+    static final int ACTION_WAKEUP = 5;
     static final int ACTION_MESSAGES = 6;
     static final int ACTION_PLAY_PAUSE_MUSIC = 7;
     static final int ACTION_PREVIOUS_TRACK = 8;
     static final int ACTION_NEXT_TRACK = 9;
     static final int ACTION_VOLUME_DOWN = 10;
     static final int ACTION_VOLUME_UP = 11;
-    static final int ACTION_WAKEUP = 12;
+//    static final int ACTION_EMAIL = 12;
 }

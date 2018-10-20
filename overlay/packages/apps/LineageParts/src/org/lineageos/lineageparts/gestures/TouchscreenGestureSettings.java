@@ -116,7 +116,7 @@ public class TouchscreenGestureSettings extends SettingsPreferenceFragment {
                 case TouchscreenGestureConstants.ACTION_DIALER:
                     return R.drawable.ic_gesture_action_dialer;
                 case TouchscreenGestureConstants.ACTION_EMAIL:
-                    return R.drawable.ic_gesture_action_email;
+                    return R.drawable.ic_gesture_action_none;
                 case TouchscreenGestureConstants.ACTION_MESSAGES:
                     return R.drawable.ic_gesture_action_messages;
                 case TouchscreenGestureConstants.ACTION_PLAY_PAUSE_MUSIC:

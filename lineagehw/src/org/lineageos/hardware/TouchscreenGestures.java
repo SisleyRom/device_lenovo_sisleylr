@@ -45,14 +45,14 @@ public class TouchscreenGestures {
 
     // Id, name, keycode
     private static final TouchscreenGesture[] TOUCHSCREEN_GESTURES = {
-//        new TouchscreenGesture(0, "Double tap", 260),
-        new TouchscreenGesture(0, "Letter V", 259),
-        new TouchscreenGesture(1, "Letter O", 253),
+        new TouchscreenGesture(0, "Double tap", 260),
+        new TouchscreenGesture(1, "Letter V", 259),
+        new TouchscreenGesture(2, "Letter O", 253),
 //        new TouchscreenGesture(3, "Up", 254),
 //        new TouchscreenGesture(4, "Down", 249),
 //        new TouchscreenGesture(5, "Left", 250),
 //        new TouchscreenGesture(6, "Right", 251),
-        new TouchscreenGesture(2, "Slide left or rignt on the bottom ", 258),
+        new TouchscreenGesture(3, "Double tap on home", 258),
 //        new TouchscreenGesture(7, "Letter C", 252),
     };
 /*    public static final int[] ALL_GESTURE_MASKS = {

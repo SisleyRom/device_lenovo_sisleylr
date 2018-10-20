@@ -245,7 +245,7 @@ public class KeyHandler implements DeviceKeyHandler {
                     volumeUp();
                     break;
                 case TouchscreenGestureConstants.ACTION_WAKEUP:
-                    wakeUp();
+                    wake_up();
                     break;
             }
         }
@@ -259,7 +259,7 @@ public class KeyHandler implements DeviceKeyHandler {
         doHapticFeedback();
     }
 
-    private void wakeUp() { 
+    private void wake_up() { 
         mGestureWakeLock.acquire(GESTURE_WAKELOCK_DURATION);
         mPowerManager.wakeUp(SystemClock.uptimeMillis(), GESTURE_WAKEUP_REASON);
 	doHapticFeedback();

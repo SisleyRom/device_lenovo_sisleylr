@@ -18,7 +18,7 @@
 
 set -e
 
-DEVICE=sisleyr
+DEVICE=sisleylr
 VENDOR=lenovo
 
 INITIAL_COPYRIGHT_YEAR=2015

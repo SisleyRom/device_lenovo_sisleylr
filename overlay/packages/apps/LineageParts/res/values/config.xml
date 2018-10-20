@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2015-2016 The CyanogenMod Project
+<!-- Copyright (C) 2016 The CyanogenMod Project
+               (C) 2017 The LineageOS Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
 
-    <!-- Indicate whether encryption causes significant performances loss.
-         This MUST NOT be set to true on devices produced in 2016 or later -->
-    <bool name="config_trustLegacyEncryption">true</bool>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <bool name="config_proximityCheckOnWake">true</bool>
-    <integer name="config_proximityCheckTimeout">350</integer>
-    <bool name="config_proximityCheckOnWakeEnabledByDefault">false</bool>
+    <!-- Default action ids for a device's touchscreen gestures
+         The array should be sorted in the same order as the
+         touchscreen gestures advertised by the device's CMHW impl. -->
+    <integer-array name="config_defaultTouchscreenGestureActions">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+	<item>0</item>
+
+</integer-array> 
 
 </resources>

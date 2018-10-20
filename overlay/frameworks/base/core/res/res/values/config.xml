@@ -175,7 +175,8 @@
     <!-- Flag indicating which package name can access the persistent data partition -->
     <string name="config_persistentDataPackageName" translatable="false">com.google.android.gms</string>
 
-    <integer name="config_deviceHardwareKeys">71</integer>
+<integer name="config_deviceHardwareKeys">71</integer>
+ <integer name="config_deviceHardwareWakeKeys">64</integer>
 
 
 </resources>

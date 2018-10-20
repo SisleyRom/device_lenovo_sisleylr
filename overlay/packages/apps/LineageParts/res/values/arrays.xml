@@ -16,16 +16,7 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Default action ids for a device's touchscreen gestures
-         The array should be sorted in the same order as the
-         touchscreen gestures advertised by the device's CMHW impl. -->
-    <integer-array name="config_defaultTouchscreenGestureActions">
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-		<item>0</item>
 
-</integer-array> 		
     <!-- Gestures - touchscreen gesture actions -->
     <string-array name="touchscreen_gesture_action_entries">
         <item>@string/touchscreen_gesture_action_do_nothing</item>
@@ -33,14 +24,13 @@
         <item>@string/touchscreen_gesture_action_camera</item>
         <item>@string/touchscreen_gesture_action_browser</item>
         <item>@string/touchscreen_gesture_action_dialer</item>
-        <item>@string/touchscreen_gesture_action_email</item>
+        <item>@string/touchscreen_gesture_action_wakeup</item>
         <item>@string/touchscreen_gesture_action_messages</item>
         <item>@string/touchscreen_gesture_action_play_pause_music</item>
         <item>@string/touchscreen_gesture_action_previous_track</item>
         <item>@string/touchscreen_gesture_action_next_track</item>
         <item>@string/touchscreen_gesture_action_volume_down</item>
         <item>@string/touchscreen_gesture_action_volume_up</item>
-	<item>@string/touchscreen_gesture_action_wakeup</item>
     </string-array>
 
     <string-array name="touchscreen_gesture_action_values">
@@ -56,8 +46,6 @@
         <item>9</item>
         <item>10</item>
         <item>11</item>
-        <item>12</item>
     </string-array>
 
-	<string name="touchscreen_gesture_action_wakeup">Wake Up</string>
 </resources>
