@@ -164,4 +164,7 @@
 
     <bool name="config_uiBlurEnabled">true</bool>
 
+	    <!-- Whether device supports double tap to wake 
+    <bool name="config_supportDoubleTapWake">true</bool>-->
+	
 </resources>

@@ -16,6 +16,9 @@
 DEVICE_PATH := device/lenovo/sisleylr
 #USE_NINJA := false
 WITHOUT_CHECK_API := true
+#cmhw
+BOARD_HARDWARE_CLASS += device/lenovo/sisleylr/cmhw
+
 include device/lenovo/msm8916-common/BoardConfigCommon.mk
 
 include device/lenovo/sisleylr/board/*.mk

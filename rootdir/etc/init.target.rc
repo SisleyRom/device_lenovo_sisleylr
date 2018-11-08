@@ -40,12 +40,37 @@ on boot
     chmod 0664 /sys/class/power_supply/bms/voltage_ocv
 
     # Notification LED
+    #echo timer > /sys/class/leds/rgbled/trigger
+    write /sys/class/leds/rgbled/trigger "timer"
     chown system system /sys/class/leds/red/blink
     chown system system /sys/class/leds/green/blink
     chown system system /sys/class/leds/blue/blink
     chown system system /sys/class/leds/red/led_time
     chown system system /sys/class/leds/green/led_time
     chown system system /sys/class/leds/blue/led_time
+    chmod 664 /sys/class/leds/torch-light/brightness
+    chmod 664 /sys/class/leds/rgbled/brightness
+    chmod 664 /sys/class/leds/test-led/brightness
+    restorecon /sys/class/leds/torch-light/brightness
+    restorecon /sys/class/leds/rgbled/brightness
+    restorecon /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/rgbled/delay_off
+    chown system system /sys/class/leds/rgbled/delay_off
+    chmod 0664 /sys/class/leds/rgbled/delay_on
+    chown system system /sys/class/leds/rgbled/delay_on
+    chmod 0664 /sys/class/leds/test-led/brightness
+    chown system system /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/rgbled/brightness
+    chown system system /sys/class/leds/rgbled/brightness
+    chmod 0664 /sys/class/leds/rgbled/trigger
+    chown system system /sys/class/leds/rgbled/trigger
+    restorecon /sys/class/leds/test-led/brightness
+	
+	# gestures
+    chown root system /sys/board_properties/tpd_suspend_status
+    chown root system /sys/board_properties/lenovo_flag
+    chmod 0664 /sys/board_properties/tpd_suspend_status
+    chmod 0664 /sys/board_properties/lenovo_flag
 
 service vm_bms /system/bin/vm_bms
     class core
@@ -82,16 +107,4 @@ on property:sys.boot_completed=1
     restart netmgrd
     restart media
     swapon_all fstab.qcom
-    write /sys/module/process_reclaim/parameters/enable_process_reclaim 1
-    write /sys/module/process_reclaim/parameters/pressure_max 70
-    write /sys/module/process_reclaim/parameters/swap_opt_eff 30
-    write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
-    write /sys/module/process_reclaim/parameters/pressure_min 50
-    write /sys/module/process_reclaim/parameters/per_swap_size 512
-    write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 53059
-    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,36864,46080"
-    write /proc/sys/vm/min_free_kbytes 2919
-    write /proc/sys/vm/extra_free_kbytes 6075
-    write /sys/kernel/mm/ksm/pages_to_scan 100
-    write /sys/kernel/mm/ksm/sleep_millisecs 500
-    write /sys/kernel/mm/ksm/run 1
+
