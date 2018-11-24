@@ -39,15 +39,31 @@ on boot
     chmod 0664 /sys/class/power_supply/bms/voltage_ocv
 
     # Notification LED
+	#echo timer > /sys/class/leds/rgbled/trigger
+	write /sys/class/leds/rgbled/trigger "timer"
     chown system system /sys/class/leds/red/blink
     chown system system /sys/class/leds/green/blink
     chown system system /sys/class/leds/blue/blink
     chown system system /sys/class/leds/red/led_time
     chown system system /sys/class/leds/green/led_time
     chown system system /sys/class/leds/blue/led_time
-	chmod 0664 /sys/class/leds/torch-light/brightness
-	chown system system /sys/class/leds/torch-light/brightness
-	restorecon /sys/class/leds/torch-light/brightness
+    chmod 664 /sys/class/leds/torch-light/brightness
+    chmod 664 /sys/class/leds/rgbled/brightness
+    chmod 664 /sys/class/leds/test-led/brightness
+    restorecon /sys/class/leds/torch-light/brightness
+    restorecon /sys/class/leds/rgbled/brightness
+    restorecon /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/rgbled/delay_off
+    chown system system /sys/class/leds/rgbled/delay_off
+    chmod 0664 /sys/class/leds/rgbled/delay_on
+    chown system system /sys/class/leds/rgbled/delay_on
+	chmod 0664 /sys/class/leds/test-led/brightness
+	chown system system /sys/class/leds/test-led/brightness
+	chmod 0664 /sys/class/leds/rgbled/brightness
+	chown system system /sys/class/leds/rgbled/brightness
+	chmod 0664 /sys/class/leds/rgbled/trigger
+	chown system system /sys/class/leds/rgbled/trigger
+	restorecon /sys/class/leds/test-led/brightness
 
     chown system system /sys/devices/virtual/graphics/fb0/bl_level
     chmod 0664 /sys/devices/virtual/graphics/fb0/bl_level
