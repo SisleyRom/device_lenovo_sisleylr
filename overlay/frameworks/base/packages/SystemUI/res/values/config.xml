@@ -33,4 +33,6 @@
          increase the rate of unintentional unlocks. -->
     <bool name="config_lockscreenAntiFalsingClassifierEnabled">false</bool>
 
+    <!-- Whether to show HD icon in the status bar for volte -->
+    <bool name="config_display_hd_volte">true</bool>
 </resources>
