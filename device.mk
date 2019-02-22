@@ -71,10 +71,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.legacyencoder=true \
     media.stagefright.less-secure=true
 
-# Display
-PRODUCT_PACKAGES += \
-    libjni_livedisplay
-
 # GPS
 PRODUCT_PACKAGES += \
     gps.msm8916 \
