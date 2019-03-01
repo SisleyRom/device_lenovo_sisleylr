@@ -611,14 +611,9 @@ static void lazy_init_modules() {
  */
 static void fix_sensor_flags(int version, sensor_t& sensor) {
     if (version < SENSORS_DEVICE_API_VERSION_1_3) {
-        if (sensor.type == SENSOR_TYPE_PROXIMITY) {
+        if (sensor.type == SENSOR_TYPE_PROXIMITY ||
+                sensor.type == SENSOR_TYPE_TILT_DETECTOR) {
             int new_flags = SENSOR_FLAG_WAKE_UP | SENSOR_FLAG_ON_CHANGE_MODE;
-            ALOGV("Changing flags of handle=%d from %x to %x",
-                    sensor.handle, sensor.flags, new_flags);
-            sensor.flags = new_flags;
-        }
-	if (sensor.type == SENSOR_TYPE_LINEAR_ACCELERATION) {
-	    int new_flags = SENSOR_FLAG_CONTINUOUS_MODE;
             ALOGV("Changing flags of handle=%d from %x to %x",
                     sensor.handle, sensor.flags, new_flags);
             sensor.flags = new_flags;

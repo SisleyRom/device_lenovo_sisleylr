@@ -27,4 +27,3 @@ PRODUCT_NAME := full_sisleylr
 PRODUCT_BRAND := lenovo
 PRODUCT_MODEL := sisleylr
 PRODUCT_MANUFACTURER := lenovo
-
