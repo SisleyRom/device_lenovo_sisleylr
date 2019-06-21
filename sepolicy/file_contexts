@@ -1,14 +1,17 @@
 /(vendor|system/vendor)/bin/sensord                                   u:object_r:sensors_exec:s0
 /(vendor|system/vendor)/bin/accelcal                                  u:object_r:sensors_exec:s0
 /data/misc/sensor(/.*)?                                               u:object_r:sensors_data_file:s0
+/sys/devices/soc\.0/78b6000\.i2c/i2c-0/0-0010/input/input[23](/.*)?   u:object_r:sysfs_sensors:s0
+/sys/devices/soc\.0/78b6000\.i2c/i2c-0/0-0023/input/input[45](/.*)?   u:object_r:sysfs_sensors:s0
+/sys/devices/virtual/input/input[0-9]+/bandwith                       u:object_r:sysfs_sensors:s0
+/sys/devices/virtual/input/input[0-9]+/op_mode                        u:object_r:sysfs_sensors:s0
+/sys/devices/virtual/input/input[0-9]+/rept_xy                        u:object_r:sysfs_sensors:s0
 
 # Lights
 /sys/devices/soc\.0/gpio-leds\.[a-z0-9]+/leds(/.*)?                       u:object_r:sysfs_leds:s0
 /sys/devices/soc\.0/qcom,camera-led-flash\.[a-z0-9]+/leds(/.*)?           u:object_r:sysfs_leds:s0
+/sys/devices/soc\.0/leds-qpnp-[0-9]+(/.*)?                    u:object_r:sysfs_leds:s0
 /sys/devices/soc\.0/[a-z0-9]+\.i2c/i2c-[0-9]/[0-9]-[a-z0-9]+/leds(/.*)?   u:object_r:sysfs_leds:s0
-
-# Persist
-/dev/block/platform/soc\.0/7824900\.sdhci/by-name/persist                 u:object_r:persist_block_device:s0
 
 # Shell files
 /system/vendor/bin/init\.qcom\.mem\.sh                                    u:object_r:qti_init_shell_exec:s0

@@ -22,10 +22,6 @@ TARGET_BOARD_PLATFORM := msm8916
 TARGET_BOOTLOADER_BOARD_NAME := MSM8916
 TARGET_NO_BOOTLOADER := true
 
-# AAPT
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xhdpi
-
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -39,8 +35,14 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
 
+TARGET_BOARD_SUFFIX := _64
+TARGET_USES_64_BIT_BINDER := true
+
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
+
+# Assertions
+TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
 
 # Audio
 AUDIO_FEATURE_ENABLED_KPI_OPTIMIZE := true
@@ -53,35 +55,54 @@ USE_CUSTOM_AUDIO_POLICY := 1
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
 BOARD_HAVE_BLUETOOTH_QCOM := true
 
-# Boot animation
-TARGET_BOOT_ANIMATION_RES := 720
-TARGET_SCREEN_HEIGHT := 1280
-TARGET_SCREEN_WIDTH := 720
+# Bootanimation
+TARGET_BOOTANIMATION_PRELOAD := true
+TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 
 # Camera
 BOARD_CAMERA_SENSORS := ov13850_p13v01n ov5693
 USE_DEVICE_SPECIFIC_CAMERA := true
+TARGET_USES_NON_TREBLE_CAMERA := true
 #TARGET_USE_VENDOR_CAMERA_EXT := true
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
-TARGET_USES_NON_TREBLE_CAMERA := true
+TARGET_USES_MEDIA_EXTENSIONS := true
+TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 TARGET_NEEDS_LEGACY_CAMERA_HAL1_DYN_NATIVE_HANDLE := true
 TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
+	/system/vendor/lib/libarcsoft_flawless_face_hal.so=23 \
+	/system/vendor/lib/libmmcamera_faceproc.so=23 \
 	/system/bin/mediaserver=22 \
-	/system/vendor/bin/mm-qcamera-daemon=22
+	/system/vendor/bin/mm-qcamera-daemon=23
+
+# Dex optimizion
+ifeq ($(HOST_OS),linux)
+ ifneq ($(TARGET_BUILD_VARIANT),eng)
+   WITH_DEXPREOPT := true
+   WITH_DEXPREOPT_DEBUG_INFO := false
+   USE_DEX2OAT_DEBUG := false
+   DONT_DEXPREOPT_PREBUILTS := true
+   WITH_DEXPREOPT_PIC := true
+   WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
+ endif
+endif
+PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed-profile
+PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true
+PRODUCT_USE_PROFILE_FOR_BOOT_IMAGE := true
+PRODUCT_DEX_PREOPT_BOOT_IMAGE_PROFILE_LOCATION := frameworks/base/config/boot-image-profile.txt
+PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
+PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
+PRODUCT_DEXPREOPT_SPEED_APPS += SystemUI
 
 # Display
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
-
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
-
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := 0x02000000
 TARGET_CONTINUOUS_SPLASH_ENABLED := true
+TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := 0x02000000
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
-TARGET_USES_NEW_ION_API := true
-USE_OPENGL_RENDERER := true
+TARGET_USES_NEW_ION_API :=true
+
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
@@ -108,14 +129,20 @@ AUDIO_FEATURE_ENABLED_FM_POWER_OPT := true
 BOARD_HAVE_QCOM_FM := true
 TARGET_QCOM_NO_FM_FIRMWARE := true
 
-# GPS
-TARGET_NO_RPC := true
-USE_DEVICE_SPECIFIC_GPS := true
-
 # Healthd
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
-BACKLIGHT_PATH := /sys/class/leds/lcd-backlight/brightness
+CHARGING_ENABLED_PATH := "/sys/class/power_supply/battery/charging_enabled"
+WITH_LINEAGE_CHARGER := true
+BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
+BOARD_CHARGING_CMDLINE_VALUE := "usb_cable"
+
+# HWUI
+HWUI_COMPILE_FOR_PERF := true
+
+# GPS
+TARGET_NO_RPC := true
+USE_DEVICE_SPECIFIC_GPS := true
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_msm8916
@@ -131,15 +158,17 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
-TARGET_KERNEL_CONFIG := foxy_sisleylr_defconfig
-TARGET_KERNEL_SOURCE := kernel/lenovo/sisleyr
+TARGET_KERNEL_CONFIG := lineageos_sisleylr_defconfig
+TARGET_KERNEL_SOURCE := kernel/lenovo/sisley
 
 # Manifest
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
-DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 
-# Media
-TARGET_USES_MEDIA_EXTENSIONS := true
+# Lights
+TARGET_PROVIDES_LIBLIGHT := true
+
+# Lineage hardware
+JAVA_SOURCE_OVERLAYS := org.lineageos.hardware|$(DEVICE_PATH)/lineagehw|**/*.java
 
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
@@ -160,6 +189,7 @@ BOARD_USES_QCOM_HARDWARE := true
 # Radio
 MALLOC_SVELTE := true
 TARGET_RIL_VARIANT := caf
+#TARGET_USES_OLD_MNC_FORMAT := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
@@ -168,10 +198,24 @@ TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_cm
 # Releasetools
 TARGET_DISABLE_OTA_ASSERT := true
 
+# Render
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+USE_OPENGL_RENDERER := true
+
+# Screen density
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := xhdpi
+
 # SELinux
 include device/qcom/sepolicy-legacy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += \
-    $(DEVICE_PATH)/sepolicy
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
+
+# Shipping API level (for CTS backward compatibility)
+PRODUCT_SHIPPING_API_LEVEL := 21
+
+# SDCLANG
+TARGET_USE_SDCLANG := false
+SDCLANG := false
 
 # Shims
 TARGET_LD_SHIM_LIBS := \
@@ -187,11 +231,6 @@ TARGET_LD_SHIM_LIBS := \
     /system/vendor/lib/hw/camera.vendor.msm8916.so|libboringssl-compat.so \
     /system/vendor/lib/libqomx_jpegenc.so|libboringssl-compat.so \
     /system/lib/libcrypto.so|libboringssl-compat.so
-
-# TWRP
-ifeq ($(WITH_TWRP),true)
-include $(DEVICE_PATH)/twrp.mk
-endif
 
 # Wi-Fi
 BOARD_HAS_QCOM_WLAN := true

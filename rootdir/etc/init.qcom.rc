@@ -36,15 +36,47 @@ on early-init
     # Turn off backlight on blank
     write /sys/class/leds/lcd-backlight/trigger "backlight"
 
+
+    # Configure zram and zswap
+    write /sys/block/zram0/comp_algorithm lz4
+    write /sys/module/zswap/parameters/compressor lz4
+    write /sys/module/zswap/parameters/zpool zsmalloc
+    write /sys/module/zswap/parameters/max_pool_percent 35
+    write /sys/module/zswap/parameters/enabled 1
 on fs
     wait /dev/block/platform/soc.0/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc.0/${ro.boot.bootdevice} /dev/block/bootdevice
 
-    mount_all /vendor/etc/fstab.qcom
+    mount_all /vendor/etc/fstab.qcom --early
 
     restorecon_recursive /persist
 
+
+on late-fs
+    # Start services for bootanim
+    start vendor.configstore-hal
+    start surfaceflinger
+    start bootanim
+    start vendor.gralloc-2-0
+
+    mount_all /vendor/etc/fstab.qcom --late
+
+on post-fs
+
+    # VM tuning
+    write /proc/sys/vm/dirty_background_ratio 20
+    write /proc/sys/vm/dirty_expire_centisecs 200
+    write /proc/sys/vm/dirty_ratio 40
+    write /proc/sys/vm/page-cluster 0
+    write /proc/sys/vm/swappiness 30
+    write /proc/sys/vm/vfs_cache_pressure 65
 on post-fs-data
+
+    # Tune FS
+    write /sys/block/mmcblk0/queue/add_random 0
+    write /sys/block/mmcblk0/queue/nr_requests 300
+    write /sys/block/mmcblk0/queue/rq_affinity 0
+
     # Create folder for mm-qcamera-daemon
     mkdir /data/fdAlbum 0770 camera camera
     mkdir /data/misc/camera 0770 camera camera
@@ -76,6 +108,9 @@ on post-fs-data
     mkdir /data/tombstones/dsps 0771 system system
 
     setprop vold.post_fs_data_done 1
+
+    # Create folder for mm-qcamera-daemon
+    mkdir /data/camera 0770 media camera
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
@@ -136,6 +171,12 @@ on boot
 
     # Permissions required for power HAL
     chown system system /sys/devices/system/cpu/cpu0/core_ctl/max_cpus
+
+    # VM BMS
+    chown root system /sys/class/power_supply/bms/current_now
+    chown root system /sys/class/power_supply/bms/voltage_ocv
+    chmod 0664 /sys/class/power_supply/bms/current_now
+    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
 
     # Wifi firmware reload path
     chown wifi wifi /sys/module/wlan/parameters/fwpath
@@ -227,15 +268,19 @@ service ril-daemon2 /vendor/bin/hw/rild -c 2
 
 service charger /charger
     class charger
-    user root
-    group root system radio log
+    group log
     seclabel u:r:healthd:s0
+
+service vm_bms /system/vendor/bin/vm_bms
+    class main
+    user root
+    group root wakelock
 
 # start camera server as daemon
 service qcamerasvr /system/vendor/bin/mm-qcamera-daemon
     class main
     user camera
-    group camera gps system inet input graphics
+    group camera system inet input graphics
     writepid /dev/cpuset/camera-daemon/tasks
 
 on property:init.svc.media=restarting
@@ -243,6 +288,13 @@ on property:init.svc.media=restarting
 
 on property:init.svc.servicemanager=restarting
     restart qcamerasvr
+
+# Allow usb charging to be disabled peristently
+on property:persist.usb.chgdisabled=1
+    write /sys/class/power_supply/battery/charging_enabled 0
+
+on property:persist.usb.chgdisabled=0
+    write /sys/class/power_supply/battery/charging_enabled 1
 
 service qseecomd /system/vendor/bin/qseecomd
     class core
@@ -272,6 +324,18 @@ service time_daemon /system/vendor/bin/time_daemon
     group root
     writepid /dev/cpuset/system-background/tasks
 
+on charger
+service charger /charger
+    class charger
+
+    wait /dev/block/bootdevice/by-name/system
+    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
+    chown root system /sys/class/power_supply/bms/current_now
+    chown root system /sys/class/power_supply/bms/voltage_ocv
+    chmod 0664 /sys/class/power_supply/bms/current_now
+    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
+    start vm_bms
+
 service ppd /system/vendor/bin/mm-pp-daemon
     class late_start
     disabled
@@ -285,6 +349,18 @@ on property:init.svc.surfaceflinger=stopped
 on property:init.svc.surfaceflinger=running
     start ppd
 
+on property:init.svc.surfaceflinger=restarting
+    stop ppd
+
+on property:init.svc.zygote=stopped
+    stop ppd
+
+on property:init.svc.zygote=running
+    start ppd
+
+on property:init.svc.zygote=restarting
+    stop ppd
+
 service wcnss-service /system/vendor/bin/wcnss_service
     class late_start
     user system
@@ -294,3 +370,24 @@ service wcnss-service /system/vendor/bin/wcnss_service
 service qcom-mem /system/vendor/bin/init.qcom.mem.sh
     disabled
     oneshot
+    write /sys/kernel/mm/ksm/pages_to_scan 100
+    write /sys/kernel/mm/ksm/sleep_millisecs 500
+    write /sys/kernel/mm/ksm/run 1
+    write /proc/sys/vm/min_free_kbytes 2919
+    write /proc/sys/vm/extra_free_kbytes 6075
+
+service charger_monitor /system/bin/charger_monitor
+    user root
+    group root
+    disabled
+
+service qbcharger /charger -m 1
+    disabled
+    oneshot
+
+on property:sys.qbcharger.enable=true
+    start qbcharger
+
+on property:sys.qbcharger.enable=false
+    stop qbcharger
+

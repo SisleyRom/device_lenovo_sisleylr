@@ -2,3 +2,5 @@ allow mediaserver cameraproxy_service:service_manager find;
 allow mediaserver cameraserver_service:service_manager add;
 allow mediaserver hal_camera_hwservice:hwservice_manager { find };
 allow mediaserver sensorservice_service:service_manager { find };
+allow mediaserver default_prop:property_service { set };
+allow mediaserver vendor_file:file { execmod };

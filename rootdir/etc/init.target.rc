@@ -25,30 +25,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-on early-init
-    #set non-stand-charger can used
-    write /sys/module/phy_msm_usb/parameters/floated_charger_enable Y
-
 on boot
-    # charger
-    chown system system /sys/bus/i2c/drivers/lc709203/batt_capacity
-    chmod 0660 /sys/bus/i2c/drivers/lc709203/batt_capacity
-    chown root system /sys/class/power_supply/bms/current_now
-    chown root system /sys/class/power_supply/bms/voltage_ocv
-    chmod 0664 /sys/class/power_supply/bms/current_now
-    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
-
-    # Notification LED
-    chown system system /sys/class/leds/red/blink
-    chown system system /sys/class/leds/green/blink
-    chown system system /sys/class/leds/blue/blink
-    chown system system /sys/class/leds/red/led_time
-    chown system system /sys/class/leds/green/led_time
-    chown system system /sys/class/leds/blue/led_time
-    chmod 0664 /sys/class/leds/torch-light/brightness
-    chown system system /sys/class/leds/torch-light/brightness
-    restorecon /sys/class/leds/torch-light/brightness
-
 #sensor
     chown system input /sys/bus/i2c/devices/0-0041/enable_ps_sensor
     chown system input /sys/bus/i2c/devices/0-0041/enable_als_sensor
@@ -80,38 +57,64 @@ on boot
     restorecon /sys/class/input/input3/gsensor_cali_y
     restorecon /sys/class/input/input3/gsensor_cali_z
 
+#led
+	#echo timer > /sys/class/leds/rgbled/trigger
+	write /sys/class/leds/rgbled/trigger "timer"
+    chown system system /sys/class/leds/red/blink
+    chown system system /sys/class/leds/green/blink
+    chown system system /sys/class/leds/blue/blink
+    chown system system /sys/class/leds/red/led_time
+    chown system system /sys/class/leds/green/led_time
+    chown system system /sys/class/leds/blue/led_time
+    chmod 664 /sys/class/leds/torch-light/brightness
+    chmod 664 /sys/class/leds/rgbled/brightness
+    chmod 664 /sys/class/leds/test-led/brightness
+    restorecon /sys/class/leds/torch-light/brightness
+    restorecon /sys/class/leds/rgbled/brightness
+    restorecon /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/rgbled/delay_off
+    chown system system /sys/class/leds/rgbled/delay_off
+    chmod 0664 /sys/class/leds/rgbled/delay_on
+    chown system system /sys/class/leds/rgbled/delay_on
+    chmod 0664 /sys/class/leds/test-led/brightness
+    chown system system /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/rgbled/brightness
+    chown system system /sys/class/leds/rgbled/brightness
+    chmod 0664 /sys/class/leds/rgbled/trigger
+    chown system system /sys/class/leds/rgbled/trigger
+    restorecon /sys/class/leds/test-led/brightness
+
 #touchscreen
     chown system system /sys/board_properties/tpd_suspend_status
     chmod 0664 /sys/board_properties/tpd_suspend_status
     chown system system /sys/board_properties/lenovo_flag
     chmod 0664 /sys/board_properties/lenovo_flag
 
-service vm_bms /system/vendor/bin/vm_bms
-    class main
-    user root system
-    group root system wakelock
+# access permission for secure touch
+    chmod 0660 /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0020/secure_touch_enable
+    chmod 0440 /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0020/secure_touch
+    chmod 0660 /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0070/secure_touch_enable
+    chmod 0440 /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0070/secure_touch
+    chown system drmrpc /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0020/secure_touch_enable
+    chown system drmrpc /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0020/secure_touch
+    chown system drmrpc /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0070/secure_touch_enable
+    chown system drmrpc /sys/devices/soc.0/78b9000.i2c/i2c-5/5-0070/secure_touch
+
+on post-fs-data
+# Allow usb charging to be disabled peristently
+on property:persist.usb.chgdisabled=1
+    write /sys/class/power_supply/battery/charging_enabled 0
+
+on property:persist.usb.chgdisabled=0
+    write /sys/class/power_supply/battery/charging_enabled 1
 
 on charger
-   wait /dev/block/bootdevice/by-name/system
-   mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=0
-   chown root system /sys/class/power_supply/bms/current_now
-   chown root system /sys/class/power_supply/bms/voltage_ocv
-   chmod 0664 /sys/class/power_supply/bms/current_now
-   chmod 0664 /sys/class/power_supply/bms/voltage_ocv
-   start vm_bms
-
-service sensord /system/vendor/bin/sensord
-    class main
-    user root
-    group root readproc
-
-on property:init.svc.zygote=restarting
-    restart sensord
-
-service calibacc /system/vendor/bin/accelcal
-    class main
-    oneshot
-    disabled
-
-on property:sys.sensors.acc=*
-    start calibacc
+    wait /dev/block/bootdevice/by-name/system
+    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
+    chown root system /sys/class/power_supply/bms/current_now
+    chown root system /sys/class/power_supply/bms/voltage_ocv
+    chmod 0664 /sys/class/power_supply/bms/current_now
+    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
+    start vm_bms
+    load_all_props
+    start qcom-post-boot

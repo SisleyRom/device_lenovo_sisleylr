@@ -13,27 +13,16 @@
 # limitations under the License.
 
 LOCAL_PATH:= $(call my-dir)
-
+# HAL module implemenation stored in
+# hw/<COPYPIX_HARDWARE_MODULE_ID>.<ro.board.platform>.so
 include $(CLEAR_VARS)
 
-EVP_FILES := \
-    p_dec.c \
-    p_enc.c \
-    p_open.c \
-    p_seal.c
-
-RSA_FILES := rsa_pss.c
-
-B64_FILES := bio_b64.c
-
-LOCAL_SRC_FILES := $(EVP_FILES) $(RSA_FILES)
-
-ifeq ($(TARGET_REQUIRES_B64_COMPAT),true)
-LOCAL_SRC_FILES += $(B64_FILES)
-endif
-
-LOCAL_SHARED_LIBRARIES := liblog libcrypto
-LOCAL_MODULE := libboringssl-compat
+LOCAL_SRC_FILES := lights.c
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_CFLAGS := $(common_flags) -DLOG_TAG=\"qdlights\"
+LOCAL_MODULE := lights.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS := optional
-include $(BUILD_SHARED_LIBRARY)
+LOCAL_PROPRIETARY_MODULE := true
 
+include $(BUILD_SHARED_LIBRARY)

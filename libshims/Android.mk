@@ -44,5 +44,26 @@ LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
 
-include $(call all-makefiles-under,$(LOCAL_PATH))
+include $(CLEAR_VARS)
 
+EVP_FILES := \
+    boringssl-compat/p_dec.c \
+    boringssl-compat/p_enc.c \
+    boringssl-compat/p_open.c \
+    boringssl-compat/p_seal.c
+
+RSA_FILES := boringssl-compat/rsa_pss.c
+
+B64_FILES := boringssl-compat/bio_b64.c
+
+LOCAL_SRC_FILES := $(EVP_FILES) $(RSA_FILES)
+
+ifeq ($(TARGET_REQUIRES_B64_COMPAT),true)
+LOCAL_SRC_FILES += $(B64_FILES)
+endif
+
+LOCAL_SHARED_LIBRARIES := liblog libcrypto
+LOCAL_MODULE := libboringssl-compat
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_SHARED_LIBRARY)
