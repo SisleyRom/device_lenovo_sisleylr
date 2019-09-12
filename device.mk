@@ -66,12 +66,16 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     camera.device@3.2-impl 
 
-	# Properties
+# Properties
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.camera.cpp.duplication=false \
     persist.camera.hal.debug.mask=0 \
     media.stagefright.legacyencoder=true \
     media.stagefright.less-secure=true
+
+# Charger images
+PRODUCT_PACKAGES += \
+    charger_res_images
 
 # GPS
 PRODUCT_PACKAGES += \
