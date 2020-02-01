@@ -23,9 +23,6 @@ DEVICE_PATH := device/lenovo/sisleylr
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
 
-#cmhw
-BOARD_HARDWARE_CLASS += device/lenovo/sisleylr/lineagehw
-
 # Camera
 BOARD_CAMERA_SENSORS := ov13850_p13v01n ov5693
 USE_DEVICE_SPECIFIC_CAMERA := true
@@ -57,9 +54,6 @@ TARGET_KERNEL_CONFIG := lineageos_sisleylr_defconfig
 
 # Lights	
 TARGET_PROVIDES_LIBLIGHT := true
-
-# Power
-TARGET_HAS_NO_POWER_STATS := true
 
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
