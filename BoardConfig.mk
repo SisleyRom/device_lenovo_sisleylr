@@ -23,9 +23,6 @@ DEVICE_PATH := device/lenovo/sisleylr
 # Audio
 USE_XML_AUDIO_POLICY_CONF := 1
 
-# Assertions
-TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
-
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
 
@@ -74,6 +71,10 @@ BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 TARGET_LD_SHIM_LIBS += \
     /system/vendor/lib64/lib-imsdpl.so|libboringssl-compat.so \
     /system/vendor/lib64/lib-imsvt.so|libshim_ims.so
+
+# Snapdragon LLVM
+TARGET_USE_SDCLANG := true
+
 # TWRP
 ifeq ($(WITH_TWRP),true)
 include $(DEVICE_PATH)/twrp.mk
