@@ -128,13 +128,6 @@
 	
 	<integer name="config_screenBrightnessDark">5</integer>
 
-
-    <bool name="config_allowAllRotations">true</bool>
-
-
-
-
-
     <bool name="config_allowAllRotations">true</bool>
 
 

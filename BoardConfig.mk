@@ -16,7 +16,7 @@
 #
 
 # Inherit from msm8916-common
-include device/cyanogen/msm8916-common/BoardConfigCommon.mk
+include device/lenovo/msm8916-common/BoardConfigCommon.mk
 
 DEVICE_PATH := device/lenovo/sisleylr
 

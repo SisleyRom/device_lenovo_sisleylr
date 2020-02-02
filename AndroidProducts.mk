@@ -1,5 +1,4 @@
-#
-# Copyright (C) 2015 The CyanogenMod Project
+# Copyright (C) 2018 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := $(call my-dir)
-
-ifeq ($(TARGET_DEVICE),sisleylr)
-include $(call all-makefiles-under,$(LOCAL_PATH))
-endif
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/lineage_sisleylr.mk
