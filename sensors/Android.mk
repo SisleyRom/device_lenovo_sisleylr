@@ -2,14 +2,23 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sensors.$(TARGET_DEVICE)
+LOCAL_MODULE := sensors.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS := optional
 LOCAL_VENDOR_MODULE := true
+
 
 LOCAL_CFLAGS += -DLOG_TAG=\"Sensors\"
 
 LOCAL_C_INCLUDES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
 LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
+
+# Export calibration library needed dependency headers
+LOCAL_COPY_HEADERS_TO := sensors/inc
+LOCAL_COPY_HEADERS := 	\
+		CalibrationModule.h \
+		sensors_extension.h \
+		sensors.h
 
 LOCAL_SRC_FILES :=	\
 		sensors.cpp 			\
@@ -62,7 +71,7 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sensors.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE := sensors.sisleyr
 
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_PROPRIETARY_MODULE := true
@@ -82,3 +91,5 @@ LOCAL_SHARED_LIBRARIES := \
 LOCAL_STRIP_MODULE := false
 
 include $(BUILD_SHARED_LIBRARY)
+
+include $(call all-makefiles-under, $(LOCAL_PATH))

@@ -1,5 +1,5 @@
 cc_library_static {
-    name: "multihal-lettuce",
+    name: "multihal-lenovo",
     vendor: true,
     srcs: [
         "multihal.cpp",
