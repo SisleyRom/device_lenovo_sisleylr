@@ -26,21 +26,23 @@
 #
 
 on early-init
-    #set non-stand-charger can used
-    write /sys/module/phy_msm_usb/parameters/floated_charger_enable Y
+    write /sys/class/leds/lcd-backlight/brightness 100
 
 on boot
-    # charger
-    chown system system /sys/bus/i2c/drivers/lc709203/batt_capacity
-    chmod 0660 /sys/bus/i2c/drivers/lc709203/batt_capacity
+    # Permissions for Factory Test of Charging Paths
+    chown system system /sys/class/power_supply/battery/capacity
+    chmod 0660 /sys/class/power_supply/battery/capacity
+    chown root /sys/class/power_supply/battery/current_now
+    chown root /sys/class/power_supply/battery/voltage_now
+    chmod 0664 /sys/class/power_supply/battery/current_now
+    chmod 0664 /sys/class/power_supply/battery/voltage_now
     chown root system /sys/class/power_supply/bms/current_now
     chown root system /sys/class/power_supply/bms/voltage_ocv
     chmod 0664 /sys/class/power_supply/bms/current_now
     chmod 0664 /sys/class/power_supply/bms/voltage_ocv
 
     # Notification LED
-	#echo timer > /sys/class/leds/rgbled/trigger
-	write /sys/class/leds/rgbled/trigger "timer"
+    write /sys/class/leds/rgbled/trigger "timer"
     chown system system /sys/class/leds/red/blink
     chown system system /sys/class/leds/green/blink
     chown system system /sys/class/leds/blue/blink
@@ -57,18 +59,15 @@ on boot
     chown system system /sys/class/leds/rgbled/delay_off
     chmod 0664 /sys/class/leds/rgbled/delay_on
     chown system system /sys/class/leds/rgbled/delay_on
-	chmod 0664 /sys/class/leds/test-led/brightness
-	chown system system /sys/class/leds/test-led/brightness
-	chmod 0664 /sys/class/leds/rgbled/brightness
-	chown system system /sys/class/leds/rgbled/brightness
-	chmod 0664 /sys/class/leds/rgbled/trigger
-	chown system system /sys/class/leds/rgbled/trigger
-	restorecon /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/test-led/brightness
+    chown system system /sys/class/leds/test-led/brightness
+    chmod 0664 /sys/class/leds/rgbled/brightness
+    chown system system /sys/class/leds/rgbled/brightness
+    chmod 0664 /sys/class/leds/rgbled/trigger
+    chown system system /sys/class/leds/rgbled/trigger
+    restorecon /sys/class/leds/test-led/brightness
 
-    chown system system /sys/devices/virtual/graphics/fb0/bl_level
-    chmod 0664 /sys/devices/virtual/graphics/fb0/bl_level
-
-#sensor
+    # Sensor
     chown system input /sys/bus/i2c/devices/0-0041/enable_ps_sensor
     chown system input /sys/bus/i2c/devices/0-0041/enable_als_sensor
     chown system input /sys/bus/i2c/devices/0-0041/als_poll_delay
@@ -99,40 +98,35 @@ on boot
     restorecon /sys/class/input/input3/gsensor_cali_y
     restorecon /sys/class/input/input3/gsensor_cali_z
 
-#touchscreen
+    # Touchscreen
     chown system system /sys/board_properties/tpd_suspend_status
     chmod 0664 /sys/board_properties/tpd_suspend_status
     chown system system /sys/board_properties/lenovo_flag
     chmod 0664 /sys/board_properties/lenovo_flag
 
+on charger
+    wait /dev/block/bootdevice/by-name/system
+    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
+
+    chown root /sys/class/power_supply/battery/current_now
+    chown root /sys/class/power_supply/battery/voltage_now
+    chmod 0664 /sys/class/power_supply/battery/current_now
+    chmod 0664 /sys/class/power_supply/battery/voltage_now
+    chown root system /sys/class/power_supply/bms/current_now
+    chown root system /sys/class/power_supply/bms/voltage_ocv
+    chmod 0664 /sys/class/power_supply/bms/current_now
+    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    start vm_bms
+
 service vm_bms /system/vendor/bin/vm_bms
-    class core
+    class main
     user root
     group root wakelock
 
-on charger
-   wait /dev/block/bootdevice/by-name/system
-   mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
-   chown root system /sys/class/power_supply/bms/current_now
-   chown root system /sys/class/power_supply/bms/voltage_ocv
-   chmod 0664 /sys/class/power_supply/bms/current_now
-   chmod 0664 /sys/class/power_supply/bms/voltage_ocv
-   start vm_bms
-
-service sensord /system/vendor/bin/sensord
-    class main
-    user root
-
-on property:init.svc.zygote=restarting
-    restart sensord
-
-service calibacc /system/vendor/bin/accelcal
-    class main
-    oneshot
-    disabled
-
-on property:sys.sensors.acc=*
-    start calibacc
+service charger /charger
+    class charger
+    critical
 
 on fs
     # VM tuning
