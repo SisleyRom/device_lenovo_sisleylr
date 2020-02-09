@@ -140,7 +140,7 @@ PRODUCT_COPY_FILES += \
 # Sensors
 PRODUCT_PACKAGES += \
     calmodule.cfg \
-    sensors.sisleyr \
+    sensors.sisleylr \
     libcalmodule_common \
     sensors.msm8916
 

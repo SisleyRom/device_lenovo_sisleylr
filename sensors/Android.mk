@@ -71,7 +71,7 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sensors.sisleyr
+LOCAL_MODULE := sensors.sisleylr
 
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_PROPRIETARY_MODULE := true
