@@ -21,7 +21,7 @@
 *
 */
 
-#define LOG_NDEBUG 1
+#define LOG_NDEBUG 0
 #define LOG_TAG "CameraWrapper"
 #include <cutils/log.h>
 #include <cutils/properties.h>
@@ -37,7 +37,7 @@
 #define BACK_CAMERA     0
 #define FRONT_CAMERA    1
 
-#define OPEN_RETRIES    25
+#define OPEN_RETRIES    10
 #define OPEN_RETRY_MSEC 40
 
 using namespace android;
