@@ -19,14 +19,6 @@
 include device/cyanogen/msm8916-common/BoardConfigCommon.mk
 
 DEVICE_PATH := device/lenovo/sisleylr
-#SDCLANG
-TARGET_USE_SDCLANG=true
-
-SDCLANG := true
-
-SDCLANG_PATH := prebuilts/clang/host/linux-x86/sdclang/bin
-
-SDCLANG_LTO_DEFS := device/lenovo/sisleylr/sdclang/sdllvm-lto-defs.mk
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
@@ -37,10 +29,8 @@ BOARD_HARDWARE_CLASS += device/lenovo/sisleylr/lineagehw
 # Camera
 BOARD_CAMERA_SENSORS := ov13850_p13v01n ov5693
 USE_DEVICE_SPECIFIC_CAMERA := true
-#TARGET_USE_VENDOR_CAMERA_EXT := true
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 TARGET_USES_NON_TREBLE_CAMERA := true
-#TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
 # Filesystem
 BOARD_FLASH_BLOCK_SIZE := 131072
@@ -63,8 +53,7 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
-#TARGET_KERNEL_CONFIG := sisleylt-user_defconfig
-TARGET_KERNEL_CONFIG := lineageos_crackling_defconfig
+TARGET_KERNEL_CONFIG := lineageos_sisleylr_defconfig
 
 # Lights	
 TARGET_PROVIDES_LIBLIGHT := true

@@ -15,7 +15,7 @@
 
 $(call inherit-product, device/lenovo/sisleylr/full_sisleylr.mk)
 
-# Inherit some common rr stuff.
+# Inherit some common LineageOS stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
 # Must define platform variant before including any common things
@@ -29,7 +29,7 @@ PRODUCT_DEVICE := sisleylr
 PRODUCT_GMS_CLIENTID_BASE := android-lenovo
 
 PRODUCT_MANUFACTURER := Lenovo
-PRODUCT_MODEL := Lenovo S60-a
+PRODUCT_MODEL := Lenovo S60-A
 
 PRODUCT_BRAND := Lenovo
 TARGET_VENDOR := lenovo
@@ -37,6 +37,6 @@ TARGET_VENDOR_PRODUCT_NAME := sisleylr
 TARGET_VENDOR_DEVICE_NAME := sisleylr
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRIVATE_BUILD_DESC="sisleylr-user 5.0.2 LRX22G S60-a_S232_151021_ROW release-keys" \
+    PRIVATE_BUILD_DESC="sisleylr-user 5.0.2 LRX22G S60-A_S232_151021_ROW release-keys" \
 
 BUILD_FINGERPRINT := Lenovo/sisleylr/sisleylr:5.0.2/LRX22G/S60-a_S232_151021_ROW:user/release-keys

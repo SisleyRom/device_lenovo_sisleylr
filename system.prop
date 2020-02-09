@@ -43,9 +43,3 @@ ril.subscription.types=NV,RUIM
 persist.data.target=dpm1
 ro.telephony.default_network=9,1
 persist.radio.rat_on=combine
-
-#
-# system props for the data modules
-#
-ro.use_data_netmgrd=true
-persist.data.netmgrd.qos.enable=true
