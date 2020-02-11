@@ -197,6 +197,9 @@
     autodetected from the Configuration. -->
     <bool name="config_showNavigationBar">false</bool>
 
+    <!-- Default color for notification LED is blue. -->
+    <color name="config_defaultNotificationColor">#ffffffff</color>
+
     <!-- Enable system navigation keys. -->
     <bool name="config_supportSystemNavigationKeys">true</bool>
 
