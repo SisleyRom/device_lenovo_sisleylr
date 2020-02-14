@@ -20,3 +20,4 @@
 ## Device Picture
 
 ![Lenovo S60-A](https://fdn2.gsmarena.com/vv/pics/lenovo/lenovo-s60-1.jpg "Lenovo S60")
+

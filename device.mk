@@ -157,10 +157,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += \
     telephony-ext
 
-# Thermals
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/thermal-engine.conf:$(TARGET_COPY_OUT_VENDOR)/etc/thermal-engine.conf
-
 # USB ID
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.usb.id.midi=90BA \
